@@ -36,7 +36,9 @@ The system manages books with details such as **title, author, and ISBN**. It al
 - **Backend:** Ruby on Rails 8
 - **Database:** SQLite/PostgreSQL (depending on environment)
 - **Authentication:** Rails 8 default authentication system
-- **Testing:** Rails default testing framework (Minitest)
+- **Testing:**
+  - Minitest for unit and integration tests
+  - Capybara for system tests
 - **Frontend:** Embedded Ruby (ERB) templates
 
 ---
@@ -91,7 +93,6 @@ cd library_app
 
 ```bash
 bundle install
-yarn install
 ```
 
 ### 3️⃣ Database Setup
@@ -112,8 +113,28 @@ Visit [http://localhost:3000](http://localhost:3000) 🌐
 
 ### 5️⃣ Run Tests
 
+The application uses Rails' built-in testing framework (Minitest) and includes:
+
+#### Test Types
+
+- **Model Tests**: Testing book and borrowing validations and business logic
+- **Controller Tests**: Testing book borrowing and returning functionality
+- **System Tests**: Testing user interactions with Capybara
+
+#### Running Tests
+
+**Run all tests:**
+
 ```bash
 rails test
+```
+
+**Run specific test types:**
+
+```bash
+rails test:models      # Run model tests
+rails test:controllers # Run controller tests
+rails test:system     # Run system tests
 ```
 
 ---
