@@ -88,7 +88,7 @@ class BooksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # callbacks to share common setup or constraints between actions.
     def set_book
       @book = Book.find(params[:id])
     end

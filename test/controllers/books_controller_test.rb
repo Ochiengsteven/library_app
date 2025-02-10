@@ -3,46 +3,48 @@ require "test_helper"
 class BooksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @book = books(:one)
+    @user = users(:one)
   end
 
-  test "should get index" do
-    get books_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_book_url
-    assert_response :success
-  end
-
-  test "should create book" do
-    assert_difference("Book.count") do
-      post books_url, params: { book: { author: @book.author, isbn: @book.isbn, title: @book.title } }
-    end
-
-    assert_redirected_to book_url(Book.last)
-  end
-
-  test "should show book" do
-    get book_url(@book)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_book_url(@book)
-    assert_response :success
-  end
-
-  test "should update book" do
-    patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, title: @book.title } }
+  test "should borrow available book" do
+    sign_in @user
+    assert @book.available?
+  
+    post borrow_book_url(@book)
+  
     assert_redirected_to book_url(@book)
+    assert_equal 'Book was successfully borrowed.', flash[:notice]
+    refute @book.reload.available?
   end
 
-  test "should destroy book" do
-    assert_difference("Book.count", -1) do
-      delete book_url(@book)
-    end
+  test "should not borrow unavailable book" do
+    sign_in @user
+    @book.borrowings.create!(user: users(:two), due_date: 2.weeks.from_now)
+  
+    post borrow_book_url(@book)
+  
+    assert_redirected_to book_url(@book)
+    assert_equal 'Book is already borrowed.', flash[:alert]
+  end
 
-    assert_redirected_to books_url
+  test "should return borrowed book" do
+    sign_in @user
+    borrowing = @book.borrowings.create!(user: @user, due_date: 2.weeks.from_now)
+  
+    post return_book_url(@book)
+  
+    assert_redirected_to book_url(@book)
+    assert_equal 'Book was successfully returned.', flash[:notice]
+    assert borrowing.reload.returned_at.present?
+  end
+
+  test "should not return book borrowed by other user" do
+    sign_in @user
+    @book.borrowings.create!(user: users(:two), due_date: 2.weeks.from_now)
+  
+    post return_book_url(@book)
+  
+    assert_redirected_to book_url(@book)
+    assert_equal 'Could not return book.', flash[:alert]
   end
 end

@@ -286,11 +286,11 @@
 }
 
 .status-available {
-  color: #059669;
+  color: #2e7d32;
 }
 
 .status-borrowed {
-  color: #dc2626;
+  color: #c62828;
 }
 
 .button-container {
@@ -380,12 +380,12 @@
 }
 
 .status-available {
-  color: #059669;
+  color: #2e7d32;
   font-weight: 600;
 }
 
 .status-borrowed {
-  color: #dc2626;
+  color: #c62828;
   font-weight: 600;
 }
 
@@ -524,5 +524,26 @@
   font-size: 1.875rem;
   font-weight: 800;
   color: #111827;
+  margin-top: 80px;
+}
+
+.flash {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  margin-top: 80px;
+}
+
+.flash.notice {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+  margin-top: 80px;
+}
+
+.flash.alert {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
   margin-top: 80px;
 }

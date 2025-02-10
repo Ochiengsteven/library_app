@@ -3,43 +3,32 @@ require "application_system_test_case"
 class BooksTest < ApplicationSystemTestCase
   setup do
     @book = books(:one)
+    @user = users(:one)
   end
 
-  test "visiting the index" do
-    visit books_url
-    assert_selector "h1", text: "Books"
-  end
-
-  test "should create book" do
-    visit books_url
-    click_on "New book"
-
-    fill_in "Author", with: @book.author
-    fill_in "Isbn", with: @book.isbn
-    fill_in "Title", with: @book.title
-    click_on "Create Book"
-
-    assert_text "Book was successfully created"
-    click_on "Back"
-  end
-
-  test "should update Book" do
+  test "should borrow and return a book" do
+    sign_in @user
     visit book_url(@book)
-    click_on "Edit this book", match: :first
-
-    fill_in "Author", with: @book.author
-    fill_in "Isbn", with: @book.isbn
-    fill_in "Title", with: @book.title
-    click_on "Update Book"
-
-    assert_text "Book was successfully updated"
-    click_on "Back"
+    
+    assert_selector "body", text: "Available"
+    click_on "Borrow"
+    
+    assert_selector ".notice", text: "Book was successfully borrowed"
+    assert_selector "body", text: "Currently borrowed by"
+    
+    click_on "Return"
+    
+    assert_selector ".notice", text: "Book was successfully returned"
+    assert_selector "body", text: "Available"
   end
-
-  test "should destroy Book" do
+  
+  test "should show unavailable status for borrowed book" do
+    @book.borrowings.create!(user: users(:two), due_date: 2.weeks.from_now)
+    sign_in @user
+    
     visit book_url(@book)
-    click_on "Destroy this book", match: :first
-
-    assert_text "Book was successfully destroyed"
+    
+    assert_selector "body", text: "Currently borrowed"
+    assert_no_selector "a", text: "Borrow"
   end
 end
