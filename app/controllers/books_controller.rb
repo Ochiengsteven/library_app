@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :borrow, :return]
+  before_action :set_book, only: [ :show, :edit, :update, :destroy, :borrow, :return ]
 
   # GET /books or /books.json
   def index
@@ -66,14 +66,14 @@ class BooksController < ApplicationController
       Rails.logger.debug "Created borrowing: #{borrowing.inspect}"
       if borrowing.save
         Rails.logger.debug "Borrowing saved successfully"
-        redirect_to @book, notice: 'Book was successfully borrowed.'
+        redirect_to @book, notice: "Book was successfully borrowed."
       else
         Rails.logger.debug "Borrowing failed to save: #{borrowing.errors.full_messages}"
-        redirect_to @book, alert: 'Could not borrow book.'
+        redirect_to @book, alert: "Could not borrow book."
       end
     else
       Rails.logger.debug "Book is not available"
-      redirect_to @book, alert: 'Book is already borrowed.'
+      redirect_to @book, alert: "Book is already borrowed."
     end
   end
 
@@ -81,9 +81,9 @@ class BooksController < ApplicationController
     borrowing = @book.current_borrowing
     if borrowing&.user == current_user
       borrowing.update(returned_at: Time.current)
-      redirect_to @book, notice: 'Book was successfully returned.'
+      redirect_to @book, notice: "Book was successfully returned."
     else
-      redirect_to @book, alert: 'Could not return book.'
+      redirect_to @book, alert: "Could not return book."
     end
   end
 

@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    sessions: "users/sessions"
   }
-  
+
   authenticated :user do
-    root 'books#index', as: :authenticated_root
-    
+    root "books#index", as: :authenticated_root
   end
 
   resources :books do
@@ -14,10 +13,10 @@ Rails.application.routes.draw do
       post :return
     end
   end
-  get 'profile', to: 'users#profile'
+  get "profile", to: "users#profile"
 
   devise_scope :user do
-    root 'devise/sessions#new'
+    root "devise/sessions#new"
   end
 
   # Keep health check endpoint

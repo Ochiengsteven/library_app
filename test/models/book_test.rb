@@ -11,17 +11,17 @@ class BookTest < ActiveSupport::TestCase
 
   test "should require title" do
     @book.title = nil
-    refute @book.valid?
+    assert_not @book.valid?
   end
 
   test "should require author" do
     @book.author = nil
-    refute @book.valid?
+    assert_not @book.valid?
   end
 
   test "should require isbn" do
     @book.isbn = nil
-    refute @book.valid?
+    assert_not @book.valid?
   end
 
   test "available? should return true when not borrowed" do
@@ -30,7 +30,7 @@ class BookTest < ActiveSupport::TestCase
 
   test "available? should return false when borrowed" do
     @book.borrowings.create!(user: users(:one), due_date: 2.weeks.from_now)
-    refute @book.available?
+    assert_not @book.available?
   end
 
   test "current_borrowing should return nil when not borrowed" do
