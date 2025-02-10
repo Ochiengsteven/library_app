@@ -18,11 +18,19 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <nav class="nav-container">
+        <div class="nav-content">
+          <div class="nav-title">Library App</div>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+        </div>
+      </nav>
+    <% end %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>

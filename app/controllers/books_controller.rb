@@ -3,7 +3,11 @@ class BooksController < ApplicationController
 
   # GET /books or /books.json
   def index
-    @books = Book.all
+    if user_signed_in?
+      @books = Book.all
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   # GET /books/1 or /books/1.json
