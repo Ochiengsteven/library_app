@@ -5,8 +5,16 @@ Rails.application.routes.draw do
   
   authenticated :user do
     root 'books#index', as: :authenticated_root
-    resources :books
+    
   end
+
+  resources :books do
+    member do
+      post :borrow
+      post :return
+    end
+  end
+  get 'profile', to: 'users#profile'
 
   devise_scope :user do
     root 'devise/sessions#new'

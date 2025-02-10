@@ -1,14 +1,27 @@
-<div id="<%= dom_id book %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= book.title %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Author:</strong>
-    <%= book.author %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Isbn:</strong>
-    <%= book.isbn %>
-  </p>
+<div id="<%= dom_id book %>" class="book-card">
+  <div class="book-content">
+    <div class="book-field">
+      <strong class="field-label">Title:</strong>
+      <span class="field-value"><%= book.title %></span>
+    </div>
+
+    <div class="book-field">
+      <strong class="field-label">Author:</strong>
+      <span class="field-value"><%= book.author %></span>
+    </div>
+
+    <div class="book-field">
+      <strong class="field-label">ISBN:</strong>
+      <span class="field-value"><%= book.isbn %></span>
+    </div>
+
+    <div class="book-status">
+      <strong class="field-label">Status:</strong>
+      <span class="<%= book.available? ? 'status-available' : 'status-borrowed' %>">
+        <%= book.available? ? 'Available' : 'Borrowed' %>
+      </span>
+    </div>
+
+    <%= link_to "Show this book", book, class: "show-book-link" %>
+  </div>
 </div>
