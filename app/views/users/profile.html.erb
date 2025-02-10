@@ -1,0 +1,33 @@
+<div class="profile-container">
+  <h1 class="profile-title">My Profile</h1>
+  
+  <div class="borrowed-books-section">
+    <h2 class="section-title">Currently Borrowed Books</h2>
+    
+    <% if @borrowed_books.any? %>
+      <div class="borrowed-books-grid">
+        <% @borrowed_books.each do |borrowing| %>
+          <div class="borrowed-book-card">
+            <div class="book-details">
+              <h3 class="book-title"><%= borrowing.book.title %></h3>
+              <p class="book-info">Author: <%= borrowing.book.author %></p>
+              <p class="book-info">Due date: <%= borrowing.due_date.strftime("%B %d, %Y") %></p>
+              <p class="due-date <%= Date.today > borrowing.due_date ? 'overdue' : '' %>">
+                <%= Date.today > borrowing.due_date ? 'OVERDUE' : 'Due in ' + distance_of_time_in_words(Date.today, borrowing.due_date) %>
+              </p>
+            </div>
+            <div class="action-buttons">
+              <%= button_to 'Return Book', return_book_path(borrowing.book), 
+                  method: :post, 
+                  class: "return-button" %>
+              <%= link_to 'View Book', book_path(borrowing.book), 
+                  class: "view-button" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="no-books-message">You haven't borrowed any books yet.</p>
+    <% end %>
+  </div>
+</div>

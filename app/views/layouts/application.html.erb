@@ -26,8 +26,13 @@
     <% if user_signed_in? %>
       <nav class="nav-container">
         <div class="nav-content">
-          <div class="nav-title">Library App</div>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+          <div class="nav-left">
+            <%= link_to "Library App", books_path, class: "nav-title" %>
+          </div>
+          <div class="nav-right">
+            <%= link_to "Profile", profile_path, class: "nav-link" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+          </div>
         </div>
       </nav>
     <% end %>
