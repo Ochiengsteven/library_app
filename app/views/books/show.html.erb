@@ -1,17 +1,30 @@
 <% content_for :title, "Showing book" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="book-container">
+  <div class="book-details">
+    <h1 class="book-title"><%= @book.title %></h1>
+    
+    <div class="book-info">
+      <p class="info-text">Author: <%= @book.author %></p>
+      <p class="info-text">ISBN: <%= @book.isbn %></p>
+      <p class="info-text">
+        Status: 
+        <span class="<%= @book.available? ? 'status-available' : 'status-borrowed' %>">
+          <%= @book.available? ? 'Available' : 'Borrowed' %>
+        </span>
+      </p>
+    </div>
 
-  <h1 class="font-bold text-4xl">Showing book</h1>
+    <div class="button-container">
+      <% if @book.available? %>
+        <%= button_to 'Borrow Book', borrow_book_path(@book), method: :post, 
+            class: "borrow-button" %>
+      <% elsif @book.current_borrowing&.user == current_user %>
+        <%= button_to 'Return Book', return_book_path(@book), method: :post,
+            class: "return-button" %>
+      <% end %>
+    </div>
 
-  <%= render @book %>
-
-  <%= link_to "Edit this book", edit_book_path(@book), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to books", books_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <div class="inline-block ml-2">
-    <%= button_to "Destroy this book", @book, method: :delete, class: "mt-2 rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
+    <%= link_to 'Back to Books', books_path, class: "back-link" %>
   </div>
 </div>
